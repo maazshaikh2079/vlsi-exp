@@ -28,3 +28,41 @@ Reference PDF: VLSI_EXP8_w_Op.pdf
    - Route the horizontal **Word Line (`WL`)** in Polysilicon/Metal and the vertical **Bit Lines (`BL`, `~BL`)** in Metal.
 5. Click **DRC (Design Rule Checker)** at every step to verify zero layout rule violations.
 6. Save the layout and run **Simulation** (`Voltage vs. Time`) to observe the Write `1`, Hold, and Write `0` waveforms on `WL`, `BL`, `~BL`, and the storage node.
+
+------------------------------------------------------------------------
+### Step 4: Detailed Beginner's UI & Component Location Guide (Where to Get Word Line, Bit Line, CMOS Inverters & Access Transistors in DSCH & Microwind)
+
+If you have never used **DSCH** or **Microwind** before, you might wonder: *"Is there a pre-made 'Word Line' or 'Bit Line' component in the library?"*
+**Answer:** No! In both DSCH and Microwind, a **Word Line (`WL`)** and **Bit Lines (`BL`, `~BL`)** are simply **wires/metal/polysilicon lines driven by a `Button` or `Clock` input** that you **rename** to `WL`, `BL`, and `~BL`. Here is the exact step-by-step guide:
+
+#### Part A: Building the 6T SRAM Cell in DSCH (Exact Component Locations)
+1. **Open DSCH** and look at the **`Symbol Library`** panel on the **right side** (`View -> Symbol Library`). Click the **`Basic`** tab at the top of that panel.
+2. **Where to Get the Two Cross-Coupled CMOS Inverters:**
+   - **Option 1 (Using 2 Inverter Symbols — Simplest):**
+     - In the **first row of the `Basic` tab** in the `Symbol Library`, click the **`Inverter (NOT gate)`** icon (triangle with a bubble).
+     - Place **2 Inverters** in the center of the canvas (`INV1` on top pointing right, `INV2` below it pointing left, or side-by-side) and wire the output of `INV1` to the input of `INV2`, and the output of `INV2` back to the input of `INV1`.
+   - **Option 2 (Using 2 pMOS + 2 nMOS Transistors):**
+     - In the **middle rows of the `Basic` tab**, click **`pMOS`** to place 2 pull-up transistors connected to **`Vdd`** (triangle/T-bar icon below the transistors), and click **`nMOS`** to place 2 pull-down transistors connected to **`Gnd`** (ground icon).
+3. **Where to Get the 2 Access Transistors:**
+   - In the **middle rows of the `Basic` tab** in the `Symbol Library`, click the **`nMOS` transistor** icon (gate without a bubble).
+   - Place **1 nMOS transistor (`M_access_L`)** to the **left** of the cross-coupled inverters, and **1 nMOS transistor (`M_access_R`)** to the **right** of the cross-coupled inverters.
+   - Use the **`Add a Line` (Wire/Pencil)** tool on the top toolbar (`Ctrl + L`) to connect the inner terminal of `M_access_L` to the left storage node (`Q`) of the inverters, and the inner terminal of `M_access_R` to the right storage node (`~Q`).
+4. **How to Create the Word Line (`WL`) and Bit Lines (`BL`, `~BL`) in DSCH:**
+   - Look at the **bottom-left of the `Basic` tab** in the `Symbol Library` and grab the **`Button`** (or **`Clock`**) icon:
+     - **Creating the Word Line (`WL`):** Place a **`Button`** (or `Clock`) at the **top-left**, **double-click** it, type **`WL`** (or `WordLine`) in the **Name** field, and click **`OK`**. Now use the **Wire tool (`Ctrl + L`)** to draw a horizontal wire from **`WL`** to **both Gate terminals** of the left and right `nMOS` access transistors! That horizontal wire connected to both access gates IS your **Word Line**.
+     - **Creating Bit Line (`BL`) & Bit Line Bar (`~BL`):**
+       - Place a **`Button`** on the **far left**, double-click it, name it **`BL`**, and wire it to the outer terminal of the left access transistor (`M_access_L`).
+       - Place another **`Button`** on the **far right** (or connect a **`NOT` Inverter** from `BL`), double-click it, name it **`~BL`** (or `BL_bar`), and wire it to the outer terminal of the right access transistor (`M_access_R`).
+   - Place two **`Light / LED`** icons (from the bottom of the `Basic` tab) on the internal storage nodes `Q` and `~Q` to see the stored bit!
+5. **Simulate in DSCH & Export Verilog:**
+   - Click **`Simulate` -> `Start Simulation`**, toggle `WL = 1` and `BL = 1` to write `1`, then toggle `WL = 0` to see the bit held in memory!
+   - Click **`Simulate` -> `Stop Simulation`**, then click **`File` -> `Make Verilog File`** -> **`OK`**.
+
+#### Part B: Opening / Compiling the 6T SRAM Layout in Microwind
+1. **Built-in 6T SRAM Layout Shortcut in Microwind (Bonus Tip!):**
+   - Microwind actually includes a ready-made 6T SRAM example! You can click **`File` -> `Open`** in Microwind and look for **`sram.msk`** or **`ram6t.msk`** in Microwind's `examples` folder, OR compile the `.v` file you just exported from DSCH via **`Compile` -> `Compile Verilog File`** -> select `.v` -> click **`Compile`** -> click **`Back to Editor`**.
+2. **Where Word Line and Bit Lines Are in Microwind Manual Layout:**
+   - **Word Line (`WL`):** Drawn as a horizontal **red `Polysilicon` bar** (from the `Palette`) that passes across the gates of the two access NMOS transistors, driven by a **`Clock` (pulse icon at the bottom of the Palette)** named `WL`.
+   - **Bit Lines (`BL` and `~BL`):** Drawn as two vertical **blue `Metal 1` (or `Metal 2`) bars** on the left and right sides connected to the outer source/drain contacts of the access NMOS transistors, driven by **`Clock` icons** named `BL` and `~BL`.
+   - **Storage Nodes (`Q` and `~Q`):** Marked with the **`Visible Node` (`Eye` icon at the bottom of the Palette)** so their voltages appear in the simulation plot.
+3. Press **`F2`** (`Analysis -> Design Rule Checker`) and click **`Simulate` -> `Run Simulation`** to view the 6T SRAM waveforms!

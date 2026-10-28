@@ -31,3 +31,48 @@ Reference PDF: VLSI_EXP4_w_Op.pdf
    - Observe **Voltage vs. Time** (confirming output is `1` when input is `0`, and `0` when input is `1`).
    - Observe **Voltage & Current** and **Voltage vs. Voltage** (DC transfer characteristic curve).
 6. Record the layout and output waveforms.
+
+------------------------------------------------------------------------
+### Step 4: Detailed Beginner's UI & Component Location Guide (DSCH & Microwind)
+
+If you have never used **DSCH** or **Microwind** before, there are **two ways** to create the CMOS Inverter layout in Microwind:
+- **Method A (Fastest & Easiest):** Place a NOT gate in DSCH, convert it to Verilog in 1 click, and compile it in Microwind.
+- **Method B (Manual Layout in Microwind):** Draw or generate the PMOS + NMOS pair directly in Microwind.
+
+Both methods are explained click-by-click below:
+
+#### Method A: Automatic Layout via DSCH -> Microwind (Recommended for Beginners)
+1. **Open DSCH:** Launch the **DSCH** application.
+2. **Locate the `Symbol Library` Palette (Right Side of Screen):**
+   - Look at the floating **`Symbol Library`** panel on the right side (if hidden, click **`View` -> `Symbol Library`** on the top menu).
+   - Make sure the **`Basic`** tab at the top of the Symbol Library is selected.
+3. **Where to Get the Components in DSCH:**
+   - **CMOS Inverter (`NOT` Gate):** In the **very first row** of the `Basic` tab in the Symbol Library, click the **Inverter (triangle with bubble)** icon, move your mouse to the center of the canvas, and **left-click** to place it.
+   - **Input (`Button` or `Clock`):** Look near the bottom-left of the `Basic` tab in the Symbol Library. Click the **`Button`** icon (square switch) or **`Clock`** icon (pulse wave), and place it to the **left** of the Inverter's input pin.
+   - **Output (`LED / Light`):** Next to the Button/Clock in the `Basic` tab, click the **`Light / LED`** icon (looks like a small bulb/circle) and place it to the **right** of the Inverter's output pin.
+   - **Connecting Wires:** Look at the **top toolbar** (below the File/Edit menu) and click the **`Add a Line` (Wire/Pencil)** icon (or press **`Ctrl + L`**). Click and drag from the Button output dot to the Inverter input dot, and from the Inverter output dot to the LED dot.
+4. **Simulate in DSCH & Export Verilog:**
+   - Click **`Simulate` -> `Start Simulation`** on the top menu (or the **Running Man / Play** icon on the top toolbar). Click the **Button** on the canvas—when input is `0`, the LED glows **Red (`1`)**; when input is `1`, the LED turns **Off (`0`)**!
+   - Click **`Simulate` -> `Stop Simulation`**.
+   - Click **`File` -> `Make Verilog File`** on the top menu -> click **`OK`** to save `inverter.v`.
+5. **Convert to Layout in Microwind:**
+   - Open **Microwind**.
+   - On the top menu bar, click **`Compile` -> `Compile Verilog File`**.
+   - Select your `inverter.v` file and click **`Open`**.
+   - In the popup window, click the **`Compile`** button at the bottom-right, then click **`Back to Editor`**.
+   - Your complete **CMOS Inverter layout** (N-Well, PMOS, NMOS, Polysilicon gate, Metal 1 output, VDD, VSS, and Clock input) appears automatically on the grid!
+
+#### Method B: Manual Layout Directly in Microwind
+1. Open **Microwind** and look at the **`Palette`** window on the right side (`View -> Palette`).
+2. Click the **`MOS Generator`** icon (4th icon in the top row of the Palette):
+   - Select **`pMOS`**, set Width `W = 2.0 um`, click **`Generate Device`**, and click near the **top** of the black canvas to place the PMOS transistor.
+   - Open **`MOS Generator`** again, select **`nMOS`**, set Width `W = 1.0 um`, click **`Generate Device`**, and click **directly below** the PMOS transistor to place the NMOS transistor aligned vertically.
+3. Click the **`Draw Box` (Rectangle)** icon (3rd icon in the top row of the Palette):
+   - Click the **`Polysilicon` (Red)** bar in the Palette and drag a vertical red rectangle connecting the PMOS gate and the NMOS gate together.
+   - Click the **`Metal 1` (Blue)** bar in the Palette and drag a vertical blue rectangle connecting the right-side **Drain** of the PMOS to the right-side **Drain** of the NMOS.
+4. Scroll to the **bottom of the Palette** to add supplies and probes:
+   - Click **`VDD Supply` (`+` icon)** -> click on the top PMOS Source contact and the N-Well.
+   - Click **`VSS Ground` (Ground triangle icon)** -> click on the bottom NMOS Source contact.
+   - Click **`Clock` (pulse wave icon)** -> click on the center **red Polysilicon gate** -> click **`Assign`**.
+   - Click **`Visible Node` (`Eye` icon)** -> click on the right-side **blue Metal 1 output line** -> click **`Assign`**.
+5. Press **`F2`** (`Analysis -> Design Rule Checker`) to verify zero errors, then click **`Simulate` -> `Run Simulation`** (or the **Play / Running Man icon** on the top toolbar) to view the inverter waveforms!

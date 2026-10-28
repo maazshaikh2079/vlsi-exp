@@ -39,3 +39,47 @@ Reference PDF: VLSI_EXP6_w_Op.pdf
 4. Save the layout (`.msk`) and run a final **DRC**.
 5. Click **Run Simulation** (`Simulate -> Start Simulation`) and observe the time-domain waveforms for `S`, `R`, `CLK`, `Q`, and `~Q`.
 6. Record the layout and output waveforms observed.
+
+------------------------------------------------------------------------
+### Step 5: Detailed Beginner's UI & Component Location Guide (DSCH & Microwind)
+
+If you have never used **DSCH** or **Microwind** before, follow this exact button-by-button guide to build the SR Flip-Flop:
+
+#### Part A: Where to Get Components & How to Wire in DSCH
+1. **Open DSCH** and look at the **`Symbol Library`** panel on the **right side** of the window (if closed, click **`View` -> `Symbol Library`** on the top menu). Ensure the **`Basic`** tab is selected.
+2. **Where to Get the 4 NAND Gates:**
+   - In the **top rows of the `Basic` tab** in the `Symbol Library`, click the **`2-Input NAND` gate icon** (D-shaped gate with a small bubble at its output).
+   - Move your mouse onto the schematic canvas and click to place **4 NAND gates**:
+     - Place **2 NAND gates** on the left column (Input steering gates: top-left `NAND1`, bottom-left `NAND2`).
+     - Place **2 NAND gates** on the right column (Cross-coupled latch gates: top-right `NAND3`, bottom-right `NAND4`).
+3. **Where to Get Inputs (`S`, `R`, `CLK`) and Outputs (`Q`, `~Q`):**
+   - Look near the **bottom-left of the `Basic` tab** in the `Symbol Library`:
+     - Click the **`Button` (Square Switch)** icon and place **two Buttons** on the far left: one at the top-left (for **`S`**) and one at the bottom-left (for **`R`**).
+     - Click the **`Clock` (Square Wave `_|-|_`)** icon (right next to the Button icon) and place **one Clock** in the middle-left (for **`CLK`**).
+     - Click the **`Light / LED` (Round Bulb)** icon and place **two LEDs** on the far right: one at the top-right (for **`Q`**) and one at the bottom-right (for **`~Q`**).
+   - **How to Rename Inputs/Outputs (`S`, `R`, `CLK`, `Q`, `~Q`):**
+     - **Double-click** directly on the top Button symbol -> in the popup box, change **Name** to **`S`** and click **`OK`**.
+     - **Double-click** the bottom Button -> change **Name** to **`R`** and click **`OK`**.
+     - **Double-click** the Clock -> change **Name** to **`CLK`** and click **`OK`**.
+     - **Double-click** the top LED -> change **Name** to **`Q`**; double-click the bottom LED -> change **Name** to **`~Q`**.
+4. **How to Connect the Wires (Cross-Coupling):**
+   - On the **top toolbar**, click the **`Add a Line` (Wire / Pencil)** icon (or press **`Ctrl + L`**):
+     - Connect **`S`** to the top input of `NAND1`.
+     - Connect **`R`** to the bottom input of `NAND2`.
+     - Connect **`CLK`** to both the bottom input of `NAND1` and the top input of `NAND2`.
+     - Connect the output of `NAND1` to the top input of `NAND3`.
+     - Connect the output of `NAND2` to the bottom input of `NAND4`.
+     - **Cross-couple `NAND3` and `NAND4`:** Drag a wire from the output of `NAND3` (`Q`) to the **top input of `NAND4`**, and drag a wire from the output of `NAND4` (`~Q`) to the **bottom input of `NAND3`**.
+     - Connect the output of `NAND3` to LED **`Q`**, and the output of `NAND4` to LED **`~Q`**.
+5. **Run Simulation in DSCH & Export Verilog:**
+   - Click **`Simulate` -> `Start Simulation`** (or the **Running Man / Play** icon on the top toolbar).
+   - Click the **`S`** and **`R`** buttons on the screen to toggle them between `0` and `1` and watch `Q` and `~Q` latch!
+   - Click **`Simulate` -> `Stop Simulation`**, then click **`File` -> `Make Verilog File`** -> click **`OK`**.
+
+#### Part B: Generating the Layout & Simulating in Microwind
+1. Open **Microwind**.
+2. Click **`Compile` -> `Compile Verilog File`** on the top menu -> select the `.v` file saved from DSCH -> click **`Open`**.
+3. In the popup window, click **`Compile`** (bottom-right button) -> then click **`Back to Editor`**.
+4. The complete CMOS layout of the SR Flip-Flop appears automatically on the black canvas!
+5. Press **`F2`** (`Analysis -> Design Rule Checker`) to confirm `No error`.
+6. Click **`Simulate` -> `Run Simulation`** (or the **Running Man / Play** icon on the top toolbar) to display the `S`, `R`, `CLK`, `Q`, and `~Q` waveforms!

@@ -34,3 +34,42 @@ Reference PDF: VLSI_EXP9_w_Op.pdf
 6. Go to **Compile -> Compile Verilog File**, select the generated `.v` file, click **Compile**, and then click **Back to Editor** to generate the CMOS layout automatically.
 7. Run **DRC (Design Rule Checker)** to confirm there are no layout errors.
 8. Click **Run Simulation** to observe the timing waveforms of inputs `A`, `B`, `Cin` and outputs `S0..S3`, `Cout`.
+
+------------------------------------------------------------------------
+### Step 4: Detailed Beginner's UI & Component Location Guide (DSCH & Microwind)
+
+If you have never used **DSCH** or **Microwind** before, here is the exact click-by-click guide showing where to find the Full Adder / logic gates, inputs, and outputs:
+
+#### Part A: Where to Get Components in DSCH for the 4-Bit Ripple Carry Adder
+1. **Open DSCH** and look at the **`Symbol Library`** panel on the **right side** of the screen (`View -> Symbol Library`).
+2. **Two Ways to Place the 4 Full Adders in DSCH:**
+   - **Shortcut Method (Using Pre-Built Full Adder Symbol in DSCH):**
+     - Look at the tabs at the top of the right-side **`Symbol Library`** window (`Basic`, `Advanced` / `Arith`).
+     - Click the **`Advanced`** tab (or look in the middle/lower rows of the `Symbol Library` for the **`Half / Full Adder` (`FA` / `Adder`)** block icon).
+     - Click the **`Full Adder`** symbol and click **4 times** in a horizontal row on the canvas to place 4 Full Adders (`FA0`, `FA1`, `FA2`, `FA3`)!
+   - **Gate-Level Method (Using XOR, AND, OR Gates from the `Basic` Tab):**
+     - In the **`Basic` tab** of the `Symbol Library` (top rows):
+       - Each 1-bit Full Adder uses **2 `XOR` gates** (for $S_i = A_i \oplus B_i \oplus C_{i-1}$), **2 `AND` gates**, and **1 `OR` gate** (for $C_i = (A_i \cdot B_i) + C_{i-1} \cdot (A_i \oplus B_i)$).
+       - Tip: Once you wire **one** 1-bit Full Adder on the canvas, drag a selection box around it with the **Arrow cursor**, press **`Ctrl + C`** (Copy), and press **`Ctrl + V`** (Paste) **3 times** to create all 4 stages in seconds!
+3. **Where to Get Inputs (`A0..A3`, `B0..B3`, `Cin`) and Outputs (`S0..S3`, `Cout`):**
+   - In the **bottom section of the `Basic` tab** in the `Symbol Library`:
+     - Click the **`Button` (Square Switch)** icon and place **9 Buttons**: four for `A0, A1, A2, A3`, four for `B0, B1, B2, B3`, and one for `Cin` (double-click each Button to rename it).
+     - Click the **`Light / LED` (Round Bulb)** icon and place **5 LEDs**: four for sums `S0, S1, S2, S3` and one for final carry `Cout` (double-click each LED to rename it).
+4. **How to Connect the Ripple Carry Chain:**
+   - Click the **`Add a Line` (Wire / Pencil)** icon on the **top toolbar** (`Ctrl + L`).
+   - Wire `Cin` into stage 0 (`FA0`).
+   - Wire the Carry-Out (`Cout` / `C0`) of `FA0` into the Carry-In (`Cin`) of `FA1`.
+   - Wire `C1` of `FA1` into `Cin` of `FA2`, and `C2` of `FA2` into `Cin` of `FA3`.
+   - Wire the final Carry-Out (`C3`) of `FA3` to the `Cout` LED.
+5. **Simulate in DSCH & Generate Verilog:**
+   - Click **`Simulate` -> `Start Simulation`** (or the **Running Man / Play** icon on the top toolbar).
+   - Set buttons `A3..A0 = 0101` (click `A2` and `A0` ON) and `B3..B0 = 1010` (click `B3` and `B1` ON) with `Cin = 0` -> verify that all four sum LEDs `S3..S0` glow Red (`1111`) and `Cout` is `0`!
+   - Click **`Simulate` -> `Stop Simulation`**, then click **`File` -> `Make Verilog File`** -> click **`OK`**.
+
+#### Part B: Automatic Layout & Simulation in Microwind
+1. Open **Microwind**.
+2. On the top menu bar, click **`Compile` -> `Compile Verilog File`** -> select the `.v` file saved from DSCH -> click **`Open`**.
+3. In the **"Verilog File"** window, click **`Compile`** (bottom-right) -> then click **`Back to Editor`**.
+4. Microwind automatically generates the complete 4-bit Ripple Carry Adder CMOS layout!
+5. Press **`F2`** (`Analysis -> Design Rule Checker`) to verify zero errors.
+6. Click **`Simulate` -> `Run Simulation`** (or the **Running Man / Play** icon on the top toolbar) to view the multi-bit adder timing waveforms!

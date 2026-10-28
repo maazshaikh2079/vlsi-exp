@@ -39,3 +39,39 @@ Reference PDF: VLSI_EXP5_w_Op.pdf
 3. Click **DRC (Design Rule Checker)** at each stage to ensure zero design rule errors.
 4. Assign **Clock** signals of different periods to inputs `A` and `B`, **VDD** to the top rail, **VSS** to the bottom rail, and a **Visible Node** to the output.
 5. Save the design, run a final **DRC**, and click **Run Simulation** to observe and record the timing waveforms.
+
+------------------------------------------------------------------------
+### Step 5: Detailed Beginner's UI & Component Location Guide (DSCH & Microwind)
+
+If you have never used **DSCH** or **Microwind** before, follow these exact button clicks and component locations:
+
+#### Part A: Where to Get Components in DSCH (For Both Logic Gate & Transistor-Level Circuits)
+1. **Open DSCH** and look at the **`Symbol Library`** panel on the **right side** of the screen (if not visible, click **`View` -> `Symbol Library`** on the top menu).
+2. **Option 1 — Using Gate Symbols (Quickest):**
+   - In the **`Basic` tab** of the right-side `Symbol Library`, look at the **top rows of logic gate icons**:
+     - Click the **`2-Input NAND`** icon (D-shape with a bubble on the output) and click on the canvas to place it.
+     - Click the **`2-Input NOR`** icon (curved OR-shape with a bubble on the output) and click on the canvas to place it.
+3. **Option 2 — Using CMOS Transistors (`pMOS` & `nMOS`) as shown in the Lab Manual Circuit Diagram:**
+   - In the **`Basic` tab** of the `Symbol Library`, look at the **middle rows**:
+     - **`pMOS` Transistor Symbol** (gate with a small circle/bubble): Click it and place **2 pMOS transistors** at the top of the canvas (in parallel for NAND; in series for NOR).
+     - **`nMOS` Transistor Symbol** (gate without a circle): Click it and place **2 nMOS transistors** at the bottom of the canvas (in series for NAND; in parallel for NOR).
+     - **`Vdd` (Power Supply):** Located right below the transistor symbols in the `Basic` tab (looks like a triangle/T-bar). Place it at the top of the pMOS network.
+     - **`Gnd` (Ground):** Located next to `Vdd` in the `Basic` tab (three horizontal lines forming a triangle). Place it at the bottom of the nMOS network.
+4. **Adding Inputs (`Button`), Outputs (`LED`), and Wires:**
+   - **Inputs (`A` and `B`):** In the bottom section of the `Basic` tab, click the **`Button`** icon (square switch) and place two buttons on the left side for inputs `in1` (`A`) and `in2` (`B`).
+   - **Output (`Y`):** In the bottom section of the `Basic` tab, click the **`Light / LED`** icon (round bulb) and place it on the right side for the output.
+   - **Wires:** On the **top toolbar**, click the **`Add a Line` (Wire / Pencil)** icon (or press **`Ctrl + L`**). Click and drag between pin dots to wire the circuit.
+5. **Simulating in DSCH & Exporting Verilog:**
+   - Click **`Simulate` -> `Start Simulation`** (or the **Running Man / Play** icon on the top toolbar).
+   - Click the input **Buttons** (`in1`, `in2`) with your mouse to toggle them between `0` and `1` and watch the output LED!
+   - Click **`Simulate` -> `Stop Simulation`**, then click the **`Timing Diagram`** icon on the top toolbar (looks like digital square waves) to view the NAND and NOR waveforms.
+   - Click **`File` -> `Make Verilog File`** on the top menu -> click **`OK`** to save `.v` file.
+
+#### Part B: Converting to Layout & Simulating in Microwind
+1. Open **Microwind**.
+2. On the top menu bar, click **`Compile` -> `Compile Verilog File`**.
+3. Select the `.v` file you saved from DSCH and click **`Open`**.
+4. In the **"Verilog File"** popup window, click the **`Compile`** button at the bottom-right, then click **`Back to Editor`**.
+5. Microwind automatically generates the complete CMOS NAND / NOR layout on the black grid (including the N-Well, parallel/series PMOS & NMOS transistors, Polysilicon input gates `in1`/`in2` with Clocks assigned, `VDD`, `VSS`, and output `Visible Node` eye probe)!
+6. Press **`F2`** (or click **`Analysis` -> `Design Rule Checker`**) to verify `No error`.
+7. Click **`Simulate` -> `Run Simulation`** on the top menu (or click the **Running Man / Play** button on the top toolbar) to open the analog/digital timing waveform window!

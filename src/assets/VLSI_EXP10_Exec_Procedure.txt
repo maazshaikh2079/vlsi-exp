@@ -34,3 +34,43 @@ Reference PDF: VLSI_EXP10_w_Op.pdf
 6. Go to **Compile -> Compile Verilog File**, select the `.v` file, click **Compile**, and click **Back to Editor** to generate the CMOS layout.
 7. Run **DRC (Design Rule Checker)** to verify zero design rule violations.
 8. Click **Run Simulation** to observe and record the layout and output waveforms.
+
+------------------------------------------------------------------------
+### Step 4: Detailed Beginner's UI & Component Location Guide (DSCH & Microwind)
+
+If you have never used **DSCH** or **Microwind** before, follow this exact button-by-button guide to locate every gate and build the **Carry Look-Ahead Adder (CLA)**:
+
+#### Part A: Where to Get Components in DSCH
+1. **Open DSCH** and look at the **`Symbol Library`** panel on the **right side** of the screen (`View -> Symbol Library`). Make sure the **`Basic`** tab is selected.
+2. **Where to Find the `XOR`, `AND`, and `OR` Gates:**
+   - Look at the **top 3 rows of icons inside the `Basic` tab** of the `Symbol Library`:
+     - **`2-Input XOR` Gate (curved OR shape with a double input line):**
+       - Click it and place **8 XOR gates** on the canvas:
+         - 4 XOR gates on the left to compute Propagate signals: $P_0 = A_0 \oplus B_0$, $P_1 = A_1 \oplus B_1$, $P_2 = A_2 \oplus B_2$, $P_3 = A_3 \oplus B_3$.
+         - 4 XOR gates on the right to compute Sum outputs: $S_0 = P_0 \oplus C_0$, $S_1 = P_1 \oplus C_1$, $S_2 = P_2 \oplus C_2$, $S_3 = P_3 \oplus C_3$.
+     - **`2-Input AND` Gate (flat-back D-shape without a bubble):**
+       - Click it and place **4 AND gates** on the left (next to the first set of XOR gates) to compute Generate signals: $G_0 = A_0 \cdot B_0$, $G_1 = A_1 \cdot B_1$, $G_2 = A_2 \cdot B_2$, $G_3 = A_3 \cdot B_3$.
+       - Also place **AND gates** in the middle section to form the carry product terms ($P_0 \cdot C_0$, $P_1 \cdot C_1$, $P_2 \cdot C_2$, $P_3 \cdot C_3$).
+     - **`2-Input OR` Gate (curved-back pointed shape without a bubble):**
+       - Click it and place **4 OR gates** in the middle section to compute the look-ahead carries:
+         - $C_1 = G_0 + (P_0 \cdot C_0)$
+         - $C_2 = G_1 + (P_1 \cdot C_1)$
+         - $C_3 = G_2 + (P_2 \cdot C_2)$
+         - $C_4 = G_3 + (P_3 \cdot C_3)$
+3. **Where to Get Inputs (`A0..A3`, `B0..B3`, `Cin`) and Outputs (`S0..S3`, `Cout`):**
+   - Look at the **bottom section of the `Basic` tab** in the `Symbol Library`:
+     - **`Button` (Square Switch icon):** Place **9 Buttons** on the far left for `A0..A3`, `B0..B3`, and `C0` (`Cin`). Double-click each Button to type its name (`A0`, `B0`, etc.).
+     - **`Light / LED` (Round Bulb icon):** Place **5 LEDs** on the far right for `S0, S1, S2, S3` and final carry `C4` (`Cout`). Double-click each LED to rename it.
+4. **How to Connect Wires:**
+   - Click the **`Add a Line` (Wire / Pencil)** icon on the **top toolbar** (or press **`Ctrl + L`**) and click-and-drag between gate pins according to the equations above.
+5. **Simulate in DSCH & Export Verilog:**
+   - Click **`Simulate` -> `Start Simulation`** (or the **Running Man / Play** icon on the top toolbar). Toggle the input Buttons to verify addition, then click **`Simulate` -> `Stop Simulation`**.
+   - Click **`File` -> `Make Verilog File`** on the top menu -> click **`OK`** to save the `.v` netlist.
+
+#### Part B: Automatic Layout Generation & Simulation in Microwind
+1. Open **Microwind**.
+2. On the top menu bar, click **`Compile` -> `Compile Verilog File`** -> select the `.v` file saved from DSCH -> click **`Open`**.
+3. In the popup **"Verilog File"** window, click the **`Compile`** button at the bottom-right -> then click **`Back to Editor`**.
+4. Microwind automatically synthesizes and draws the complete CMOS layout of the Carry Look-Ahead Adder!
+5. Press **`F2`** (`Analysis -> Design Rule Checker`) to verify there are no DRC violations.
+6. Click **`Simulate` -> `Run Simulation`** (or the **Running Man / Play** icon on the top toolbar) to view and record the output timing waveforms!

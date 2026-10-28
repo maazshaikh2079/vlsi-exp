@@ -70,3 +70,29 @@ M1 2 1 0 0 PMOS W=1u L=0.35u
 5. Verify the parameter variations recorded in the journal (pages 31–36 of VLSI_EXP2_w_Op.pdf):
    - Output Characteristics: VTO=1.2V (ID=-2.1mA), TOX=120E-9 (ID=-2.2mA), LAMBDA=0.02, GAMMA=0.744 (ID=-2.2mA), LAMBDA=0 (ID=-600mA)
    - Transfer Characteristics: L=0.5u, L=1u, VTO=1.5, VTO=2, KP=2.055, GAMMA=0.744
+
+------------------------------------------------------------------------
+### Step 4: Detailed Beginner's UI & Button Walkthrough (OrCAD PSpice A/D)
+
+If you have never used **OrCAD PSpice A/D** before, this experiment uses a **text netlist (`.cir`)**, meaning all circuit components (PMOS transistor `M1`, voltage sources `VDD`, `VGS`, and dummy ammeter `VX`) are created directly by typing/pasting the code. Follow these exact button clicks:
+
+1. **Open PSpice A/D:**
+   - Open Windows **Start Menu** -> **Cadence / OrCAD** -> **PSpice AD**.
+2. **Open a Blank Text Editor Tab:**
+   - In the top menu bar, click **`File` -> `New` -> `Text File`**.
+3. **Paste Code & Save as `.cir`:**
+   - Copy the **PMOS Output Characteristics** code from Step 2A (or **PMOS Transfer Characteristics** from Step 2B) and paste (`Ctrl + V`) into the editor window.
+   - Click **`File` -> `Save As...`**.
+   - Change **"Save as type"** to **`All Files (*.*)`**, enter **`pmos_output.cir`** as the file name, and click **`Save`**.
+4. **Make the `.cir` File Active for Simulation:**
+   - After saving a text file, PSpice A/D keeps the **Run** button disabled until you open it as a circuit file.
+   - Click **`File` -> `Open Simulation...`** (or **`File` -> `Open...`**, then change the **"Files of type"** dropdown at the bottom to **`Circuit Files (*.cir)`**).
+   - Select **`pmos_output.cir`** and click **`Open`**.
+   - The **blue Play (`|>`) button** on the top toolbar will now light up!
+5. **Run the Simulation & Add the Waveform Trace:**
+   - Click **`Simulation` -> `Run`** on the top menu (or click the **blue Play `|>` icon** on the toolbar).
+   - Once the black graph window appears, click **`Trace` -> `Add Trace...`** on the top menu (or press the **`Insert`** key).
+   - In the **"Add Traces"** window, click **`I(VX)`** (or **`ID(M1)`**) from the left list and click **`OK`**.
+   - The PMOS characteristic curves will appear on the graph.
+6. **Testing Parameter Variations:**
+   - Click back to the `.cir` text tab on the left, modify `VTO`, `TOX`, `GAMMA`, or `L` in the `.MODEL PMOS` or `M1` line, press **`Ctrl + S`**, click the **blue Play (`Run`)** icon, and add trace **`I(VX)`** again.

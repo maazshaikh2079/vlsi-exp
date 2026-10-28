@@ -76,3 +76,33 @@ M1 2 1 0 0 NMOS W=1U L=0.35U
    - Transconductance (KP): KP=29E-4 (ID=5.2mA), KP=29.30
    - Oxide Thickness (TOX): TOX=120E-9 (ID=368uA)
    - Body Effect (GAMMA): GAMMA=0.744
+
+------------------------------------------------------------------------
+### Step 4: Detailed Beginner's UI & Button Walkthrough (OrCAD PSpice A/D)
+
+If you have never used **OrCAD PSpice A/D** before, note that this experiment uses a **text netlist (`.cir`)**, so you do NOT need to drag-and-drop schematic symbols—the code itself defines the NMOS transistor (`M1`), power supply (`VDD`), gate source (`VGS`), and ammeter (`VX`). Follow these exact clicks inside the app:
+
+1. **Launch PSpice A/D:**
+   - Click the Windows **Start Menu** -> open the **Cadence / OrCAD** folder -> click **PSpice AD** (or **AMS Simulator**).
+2. **Create a New Text File:**
+   - Look at the top-left menu bar and click **`File` -> `New` -> `Text File`**.
+   - A blank white text editor tab will open inside PSpice A/D.
+3. **Paste & Save as a `.cir` File:**
+   - Copy the **NMOS Output Characteristics** code from Step 2A above and paste it (`Ctrl + V`) into the blank editor.
+   - Click **`File` -> `Save As...`** on the top menu.
+   - In the Save dialog, change **"Save as type"** to **`All Files (*.*)`**, type **`nmos_output.cir`** in the **"File name"** box, and click **`Save`**.
+4. **Activate the Circuit File (Crucial Step in PSpice A/D!):**
+   - Right after saving a text file, the **Run** button in PSpice A/D is still greyed out because PSpice treats it as a plain text file until you open it as a Simulation Circuit.
+   - Click **`File` -> `Open Simulation...`** on the top menu (or click **`File` -> `Open...`**, change the bottom **"Files of type"** dropdown from `*.dat` to **`Circuit Files (*.cir)`**).
+   - Select your saved **`nmos_output.cir`** file and click **`Open`**.
+   - Now look at the top toolbar: the **blue Play triangle icon (`Run`)** is active!
+5. **Run the Simulation:**
+   - Click **`Simulation` -> `Run`** on the top menu (or click the **blue Play `|>` button** on the toolbar).
+   - A black graph area (the **Probe Waveform Window**) will appear with the X-axis ranging from `0V` to `12V` (`VDD`).
+6. **Plot the Drain Current Curve (`I(VX)` / `ID(M1)`):**
+   - On the top menu bar, click **`Trace` -> `Add Trace...`** (or press the **`Insert`** key on your keyboard, or click the toolbar icon that looks like a **green waveform with a `+` sign**).
+   - An **"Add Traces"** dialog box opens. In the left column (**Simulation Output Variables**), scroll and click on **`I(VX)`** (or **`ID(M1)`**).
+   - Click the **`OK`** button at the bottom-right of the dialog.
+   - You will immediately see the family of NMOS Output Characteristic curves plotted on the screen!
+7. **Repeat for Transfer Characteristics & Parameter Changes:**
+   - To edit parameters (such as changing `W=1u` to `W=0.5u`), click the **`nmos_output.cir` text tab** on the left side (or `View -> Circuit File`), edit the number, press **`Ctrl + S`** to save, click the **blue Play (`Run`)** button again, and add the trace `I(VX)`.

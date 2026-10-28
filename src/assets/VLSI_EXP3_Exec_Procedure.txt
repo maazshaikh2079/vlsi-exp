@@ -48,3 +48,44 @@ Reference PDF: VLSI_EXP3_w_Op.pdf
 3. Inside the N-Well, draw a **P+ Diffusion** box, cross it with a **Polysilicon** gate strip, and add **Metal 1 / P+ Contacts** on Source and Drain (or use the **MOS Generator** with **pMOS** selected).
 4. Add **VDD Supply** to the N-Well and Source, apply clock/input to the Gate, and run **DRC**.
 5. Run **Simulation -> MOS Characteristics** and inspect **3D Process View**.
+
+------------------------------------------------------------------------
+### Step 4: Detailed Beginner's UI & Component Location Guide (Microwind)
+
+If you have never used **Microwind** before, here is exactly where every button, tool, and component is located on the screen:
+
+1. **Where to Find the Palette (Your Main Toolbox):**
+   - When you open **Microwind**, you will see a **black grid canvas** on the left/center and a floating vertical window on the **right side** called the **`Palette`**.
+   - *(If you don't see the Palette window, click **`View` -> `Palette`** on the top menu bar.)*
+
+2. **The Easiest Way to Get an NMOS or PMOS Device (Using the MOS Generator Button):**
+   - Look at the **top row of icons inside the `Palette` window** (right below the title bar of the Palette):
+     - **1st icon (Arrow):** Select / Move cursor.
+     - **2nd icon (Scissors / X):** Delete / Cut tool.
+     - **3rd icon (Filled Rectangle):** `Draw Box` tool (used for manual drawing).
+     - **4th icon (MOSFET Symbol — looks like a transistor gate):** **`MOS Generator`**!
+   - Click that **4th icon (`MOS Generator`)** in the Palette:
+     - A popup window titled **"MOS Generator"** opens.
+     - Under **MOS**, select **`nMOS`** (for NMOS) or **`pMOS`** (for PMOS).
+     - Leave Width (`W`) and Length (`L`) at default (or enter `W = 1.20 um`, `L = 0.12 um`).
+     - Click the **`Generate Device`** button, then move your mouse onto the black canvas and **left-click once** to drop the complete transistor (diffusion, polysilicon gate, source/drain metal contacts, and N-well if PMOS) onto the grid!
+
+3. **How to Draw Manually Using the Palette Layers (Optional Alternative to MOS Generator):**
+   - If you want to draw rectangles manually, click the **3rd icon (`Draw Box`)** at the top of the Palette, then click one of the colored layer bars in the middle of the Palette:
+     - **`N-Well` (top green hatched bar):** Click it, then drag a large rectangle on the black canvas (required around PMOS devices).
+     - **`Polysilicon` (Bright Red bar):** Click it, then drag a vertical red strip (`2 lambda` wide) for the transistor **Gate**.
+     - **`N+ Diffusion` (Dark Green bar):** Click it, then drag a horizontal green rectangle across the red Polysilicon strip to create an **NMOS**.
+     - **`P+ Diffusion` (Yellow-Green bar):** Click it, then drag a horizontal rectangle inside the N-Well across the red Polysilicon strip to create a **PMOS**.
+     - **`Contact` icons (squares with an `X` right below the color bars):** Click `Metal/N+ Contact` or `Metal/P+ Contact` and click on the left (Source) and right (Drain) sides of the diffusion.
+
+4. **Where to Get Power (`VDD`), Ground (`VSS`), Clock, and Output Probes:**
+   - Scroll to the **bottom section of the `Palette` window** (below the colored layer bars). You will see a row of simulation property icons:
+     - **`VDD Supply` (looks like a `+` sign or T-bar):** Click this icon -> click on the **N-Well** and Source of the PMOS (or Drain supply) on the canvas.
+     - **`VSS Ground` (looks like a 3-line Ground triangle):** Click this icon -> click on the **Source (left contact)** of the NMOS on the canvas.
+     - **`Clock` (looks like a square pulse wave `_|-|_`):** Click this icon -> click on the **red Polysilicon Gate** of your transistor -> a popup appears -> click **`Assign`**. Do the same on the **Drain (right contact)** if simulating Voltage vs. Time.
+     - **`Visible Node` (looks like an `Eye` icon):** Click this icon -> click on the **Drain (right contact)** -> click **`Assign`**.
+
+5. **How to Check Design Rules (DRC), Run Simulation, and View 3D Process:**
+   - **DRC (Design Rule Checker):** On the top menu bar, click **`Analysis` -> `Design Rule Checker`** (or press **`F2`**). Look at the bottom status bar—it should say `No error`.
+   - **MOS Characteristics Curve:** On the top menu bar, click **`Simulate` -> `MOS Characteristics`** (or click the transistor curve icon). A window opens showing the exact $I_D$ vs. $V_{DS}$ curve of your drawn transistor! You can toggle between **`nMOS`** and **`pMOS`** and between **`Vd, Id`** (Output) and **`Vg, Id`** (Transfer) right inside that window.
+   - **3D Process View:** On the top menu bar, click **`Simulate` -> `Process Steps in 3D`** (or **`Analysis` -> `Process View in 3D`**) to see the 3D silicon cross-section!
