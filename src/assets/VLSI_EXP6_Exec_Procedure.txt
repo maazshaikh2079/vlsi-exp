@@ -1,0 +1,41 @@
+========================================================================
+VLSI EXPERIMENT 6 — EXECUTION PROCEDURE
+Title: To design layout of S-R flip-flop using Micro-wind.
+Reference PDF: VLSI_EXP6_w_Op.pdf
+========================================================================
+
+### Step 1: Software Required
+- DSCH (Digital Schematic Editor)
+- Microwind (Layout Editor & Simulator)
+
+------------------------------------------------------------------------
+### Step 2: Layout Design Rules Summary
+1. N-well / P-well spacing = 6 lambda
+2. N-well / P-well width = 6 lambda
+3. Active spacing = 3 lambda
+4. Metal width = 2 lambda
+5. Metal-to-metal spacing = 3 lambda
+6. Polysilicon width = 3 lambda
+
+------------------------------------------------------------------------
+### Step 3: Procedure in DSCH Software
+
+1. Open **DSCH** software.
+2. Construct the **Clocked SR Flip-Flop** schematic using four 2-input NAND gates (two input steering NAND gates gated by `CLK`, and two cross-coupled NAND gates forming the latch with outputs `Q` and `~Q`).
+3. Add input switches/clocks for `S` (Set), `R` (Reset), and `CLK` (Clock), and output LEDs for `Q` and `~Q`.
+4. Run the logic simulation in DSCH and verify the SR Flip-Flop truth table:
+   - `S=0, R=0` -> Hold previous state
+   - `S=0, R=1` -> Reset (`Q=0, ~Q=1`)
+   - `S=1, R=0` -> Set (`Q=1, ~Q=0`)
+   - `S=1, R=1` -> Invalid / Forbidden state
+5. Save the schematic and click **File -> Make Verilog File** to generate the `.v` netlist.
+
+------------------------------------------------------------------------
+### Step 4: Procedure in Microwind Software
+
+1. Start **Microwind** software for layout design.
+2. Compile the generated Verilog file (`Compile -> Compile Verilog File` -> select `.v` file -> `Compile` -> `Back to Editor`) or draw the CMOS SR flip-flop layout following the design rules.
+3. Click **DRC (Design Rule Checker)** at every stage of the design to avoid layout errors.
+4. Save the layout (`.msk`) and run a final **DRC**.
+5. Click **Run Simulation** (`Simulate -> Start Simulation`) and observe the time-domain waveforms for `S`, `R`, `CLK`, `Q`, and `~Q`.
+6. Record the layout and output waveforms observed.

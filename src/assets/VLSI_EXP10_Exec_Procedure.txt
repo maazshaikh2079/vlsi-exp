@@ -1,0 +1,36 @@
+========================================================================
+VLSI EXPERIMENT 10 — EXECUTION PROCEDURE
+Title: To design the layout of Carry look ahead adder using DSCH and Micro-wind.
+Reference PDF: VLSI_EXP10_w_Op.pdf
+========================================================================
+
+### Step 1: Software Required
+- DSCH (Digital Schematic Editor)
+- Microwind (Layout Editor & Simulator)
+
+------------------------------------------------------------------------
+### Step 2: Carry Look-Ahead Adder (CLA) Equations
+- Unlike a Ripple Carry Adder, a **Carry Look-Ahead Adder (CLA)** eliminates carry propagation delay by computing carries in parallel using **Carry Generate ($G_i$)** and **Carry Propagate ($P_i$)** signals:
+  - $P_i = A_i \oplus B_i$
+  - $G_i = A_i \cdot B_i$
+  - Sum: $S_i = P_i \oplus C_i$
+  - Carry Look-Ahead equations:
+    - $C_1 = G_0 + P_0 \cdot C_0$
+    - $C_2 = G_1 + P_1 \cdot C_1 = G_1 + P_1 \cdot G_0 + P_1 \cdot P_0 \cdot C_0$
+    - $C_3 = G_2 + P_2 \cdot C_2 = G_2 + P_2 \cdot G_1 + P_2 \cdot P_1 \cdot G_0 + P_2 \cdot P_1 \cdot P_0 \cdot C_0$
+    - $C_4 = G_3 + P_3 \cdot C_3$
+
+------------------------------------------------------------------------
+### Step 3: Step-by-Step Execution Procedure
+
+1. Open **DSCH** software.
+2. Draw the **4-Bit Carry Look-Ahead Adder** schematic:
+   - Place XOR and AND gates for each bit (`A0..A3`, `B0..B3`) to generate $P_i$ and $G_i$.
+   - Build the Carry Look-Ahead logic network using AND-OR gates to produce $C_1, C_2, C_3, C_4$ from $C_0$ ($C_{in}$).
+   - XOR each $P_i$ with $C_i$ to produce the sum outputs $S_0, S_1, S_2, S_3$.
+3. Run the simulation in DSCH to verify fast parallel addition across 4-bit inputs.
+4. Save the schematic (`.sch`) and click **File -> Make Verilog File** to export the `.v` netlist.
+5. Open **Microwind** software.
+6. Go to **Compile -> Compile Verilog File**, select the `.v` file, click **Compile**, and click **Back to Editor** to generate the CMOS layout.
+7. Run **DRC (Design Rule Checker)** to verify zero design rule violations.
+8. Click **Run Simulation** to observe and record the layout and output waveforms.

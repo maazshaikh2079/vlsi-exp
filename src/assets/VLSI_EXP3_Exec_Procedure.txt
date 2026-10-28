@@ -1,0 +1,50 @@
+========================================================================
+VLSI EXPERIMENT 3 — EXECUTION PROCEDURE
+Title: Design and verify the layout of NMOS and PMOS devices in micro-wind.
+Reference PDF: VLSI_EXP3_w_Op.pdf
+========================================================================
+
+### Step 1: Software Required
+- Microwind (e.g., Microwind 2 / Microwind 3.1 / Microwind 3.5 Lite)
+
+------------------------------------------------------------------------
+### Step 2: Lambda-Based Design Rules Reference
+- N-Well:
+  - Minimum well size (r101): 12 lambda
+  - Between wells (r102): 12 lambda
+- Diffusion (N+ and P+):
+  - Minimum diffusion width (r201): 4 lambda
+  - Between two diffusions (r202): 4 lambda
+- Polysilicon Gate:
+  - Polysilicon width (r301): 2 lambda
+  - Polysilicon gate extension over diffusion (r302): 2 lambda
+- Contacts & Metal 1:
+  - Contact width (r401): 2 lambda
+  - Metal 1 width: 3 lambda / 4 lambda
+
+------------------------------------------------------------------------
+### Step 3: Step-by-Step Execution in Microwind
+
+#### A) Designing NMOS Layout
+1. Launch Microwind software.
+2. Select the foundry technology file (`File -> Select Foundry -> default.rul` for 0.12um CMOS 6-metal layers).
+3. Either draw manually using the Palette:
+   - Draw an **N+ Diffusion** box (green) of width >= 4 lambda.
+   - Draw a vertical **Polysilicon** strip (red) crossing the center of the N+ diffusion (width = 2 lambda) to form the Gate.
+   - Place **Metal 1 / N+ Contacts** on the left (Source) and right (Drain) diffusion regions.
+   OR click the **MOS Generator** icon in the Palette, select **nMOS**, set `W` and `L`, and click **Generate Device**.
+4. Add Simulation Properties from the Palette:
+   - Connect **VSS (Ground)** to the Source terminal.
+   - Add a **Clock / Pulse** or DC voltage property to the Drain and Gate terminals.
+   - Place a **Visible Node (Eye icon)** on the output/drain to monitor current/voltage.
+5. Click **Design Rule Checker (DRC)** (`Analysis -> Design Rule Checker` or F2) at every stage to ensure zero layout violations.
+6. Click **Run Simulation** (`Simulate -> Run Simulation`):
+   - Select **MOS Characteristics** to view the $I_D$ vs. $V_{DS}$ and $I_D$ vs. $V_{GS}$ curves.
+   - Click **Process -> 3D Process View** to inspect the 3D fabrication steps of the NMOS transistor.
+
+#### B) Designing PMOS Layout
+1. Start a new layout (`File -> New`).
+2. Draw an **N-Well** region (minimum 12 lambda).
+3. Inside the N-Well, draw a **P+ Diffusion** box, cross it with a **Polysilicon** gate strip, and add **Metal 1 / P+ Contacts** on Source and Drain (or use the **MOS Generator** with **pMOS** selected).
+4. Add **VDD Supply** to the N-Well and Source, apply clock/input to the Gate, and run **DRC**.
+5. Run **Simulation -> MOS Characteristics** and inspect **3D Process View**.

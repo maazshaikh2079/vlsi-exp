@@ -1,0 +1,30 @@
+========================================================================
+VLSI EXPERIMENT 8 — EXECUTION PROCEDURE
+Title: To design the layout of 6T SRAM using micro-wind.
+Reference PDF: VLSI_EXP8_w_Op.pdf
+========================================================================
+
+### Step 1: Software Required
+- DSCH (Digital Schematic Editor)
+- Microwind (Layout Editor & Simulator)
+
+------------------------------------------------------------------------
+### Step 2: 6T SRAM Cell Architecture Overview
+- A **6-Transistor (6T) CMOS SRAM Cell** consists of:
+  - **2 Cross-Coupled CMOS Inverters** (2 PMOS load transistors + 2 NMOS driver transistors) that store 1 bit (`Q` and `~Q`).
+  - **2 NMOS Access (Pass) Transistors** controlled by the **Word Line (`WL`)** that connect the internal storage nodes to the **Bit Lines (`BL` and `~BL`)** during Read and Write operations.
+
+------------------------------------------------------------------------
+### Step 3: Step-by-Step Execution Procedure
+
+1. Open **DSCH** / **Microwind** software.
+2. In **DSCH**, draw the 6T SRAM cell using two cross-coupled CMOS inverters (4 transistors) and two NMOS access transistors connected to `Bit Line (BL)`, `Bit Line Bar (~BL)`, and `Word Line (WL)`.
+3. Verify the Read and Write operations in DSCH:
+   - **Write Operation:** Set `WL = 1` and drive `BL = 1, ~BL = 0` (to write `1`) or `BL = 0, ~BL = 1` (to write `0`).
+   - **Hold Operation:** Set `WL = 0`; the cross-coupled inverters retain the stored bit.
+4. In **Microwind**, draw the 6T SRAM layout (or open/compile the 6T SRAM cell layout):
+   - Place the two PMOS pull-up transistors in the top N-Well connected to `VDD`.
+   - Place the two NMOS pull-down transistors and two NMOS access transistors in the bottom P-substrate connected to `VSS`.
+   - Route the horizontal **Word Line (`WL`)** in Polysilicon/Metal and the vertical **Bit Lines (`BL`, `~BL`)** in Metal.
+5. Click **DRC (Design Rule Checker)** at every step to verify zero layout rule violations.
+6. Save the layout and run **Simulation** (`Voltage vs. Time`) to observe the Write `1`, Hold, and Write `0` waveforms on `WL`, `BL`, `~BL`, and the storage node.

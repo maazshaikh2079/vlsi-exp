@@ -1,0 +1,41 @@
+========================================================================
+VLSI EXPERIMENT 5 — EXECUTION PROCEDURE
+Title: To design layout of NAND and NOR gate using micro-wind.
+Reference PDF: VLSI_EXP5_w_Op.pdf
+========================================================================
+
+### Step 1: Software Required
+- DSCH (Digital Schematic Editor)
+- Microwind (Layout Editor & Simulator)
+
+------------------------------------------------------------------------
+### Step 2: Layout Design Rules Summary
+1. N-well / P-well spacing = 6 lambda
+2. N-well / P-well width = 6 lambda
+3. Active spacing = 3 lambda
+4. Polysilicon width = 2 to 3 lambda
+5. Metal width = 2 to 3 lambda
+6. Metal-to-metal spacing = 2 to 3 lambda
+
+------------------------------------------------------------------------
+### Step 3: Procedure in DSCH Software (Schematic & Logic Verification)
+
+1. Open **DSCH** software.
+2. Build the **2-input CMOS NAND gate** (2 parallel PMOS transistors in pull-up network + 2 series NMOS transistors in pull-down network) and the **2-input CMOS NOR gate** (2 series PMOS transistors in pull-up network + 2 parallel NMOS transistors in pull-down network).
+3. Add input buttons/clocks (`in1`, `in2`) and an output LED/probe (`out1`).
+4. Check all connections to ensure there are no open circuits.
+5. Save the schematic (`.sch`) and click **Run Simulation** to verify the truth table:
+   - **NAND:** Output is `0` only when both inputs are `1`.
+   - **NOR:** Output is `1` only when both inputs are `0`.
+6. Click **File -> Make Verilog File** to export the `.v` netlist for Microwind (optional automatic layout generation).
+
+------------------------------------------------------------------------
+### Step 4: Procedure in Microwind Software (Layout & Simulation)
+
+1. Open **Microwind** software.
+2. Either compile the Verilog file (`Compile -> Compile Verilog File` -> select the `.v` file -> click `Compile` -> `Back to Editor`) OR draw the layout manually:
+   - **2-Input NAND Layout:** Two PMOS transistors in parallel (sharing drain/source contacts in the N-Well) and two NMOS transistors in series (sharing the middle diffusion) connected by two vertical Polysilicon gate lines (`A` and `B`).
+   - **2-Input NOR Layout:** Two PMOS transistors in series in the N-Well and two NMOS transistors in parallel at the bottom.
+3. Click **DRC (Design Rule Checker)** at each stage to ensure zero design rule errors.
+4. Assign **Clock** signals of different periods to inputs `A` and `B`, **VDD** to the top rail, **VSS** to the bottom rail, and a **Visible Node** to the output.
+5. Save the design, run a final **DRC**, and click **Run Simulation** to observe and record the timing waveforms.

@@ -1,0 +1,78 @@
+========================================================================
+VLSI EXPERIMENT 1 — EXECUTION PROCEDURE
+Title: To study and verification of Output and Transfer characteristics of NMOS transistor.
+Reference PDF: VLSI_EXP1_w_Op.pdf
+========================================================================
+
+### Step 1: Install / Open a SPICE Simulator
+
+Your lab manual supports OrCAD PSpice or Ngspice (and LTspice also runs .cir files directly):
+- Option A (OrCAD PSpice A/D / Student Edition 9.1): Open PSpice AD (File -> New -> Text File).
+- Option B (Ngspice / LTspice — lightweight & free): Install Ngspice (winget install ngspice or download from SourceForge) or LTspice (winget install AnalogDevices.LTspice), open the .cir file, and click Run.
+- Virtual Lab Link: http://www.vlsi-iitg.vlabs.ac.in
+
+------------------------------------------------------------------------
+### Step 2: Create the .cir Netlist Files
+
+(Note: The lab manual PDF has a couple of syntax typos in the code on pages 15–16, such as missing VGS 1 0 DC 0v in the Output code and = instead of + in the Transfer code. Use the corrected SPICE netlists below so they simulate without errors.)
+
+#### A) NMOS Output Characteristics (nmos_output.cir)
+Plots Drain Current I_D vs. V_DS (0V to 12V) for different V_GS steps (0V to 2V):
+
+NMOS OUTPUT CHARACTERISTICS CODE
+VGS 1 0 DC 0v
+VX 3 2 DC 0v
+VDD 3 0 DC 5v
+M1 2 1 0 0 NMOS W=1u L=0.35u
+.MODEL NMOS NMOS (LEVEL=3
++TOX=7.9E-9 NSUB=1E17 GAMMA=0.5827871
++PHI=0.7 VTO=0.54455489 DELTA=0
++UO=436.256147 ETA=0 THETA=0.1749684
++KP=2.055786E-4 VMAX=8.3099444E4 KAPPA=0.2574081
++RSH=0.0559398 NFS=1E12 TPG=1
++XJ=3E-7 LD=3.162278E-11 WD=7.046724E-8
++CGDO=2.82E-10 CGSO=2.82E-10 CGBO=1E-10
++CJ=1E-3 PB=0.9758533 MJ=0.3448504
++CJSW=3.77852E-10 MJSW=0.3508721)
+.DC VDD 0 12 0.2 VGS 0 2 0.1
+.PLOT DC I(VX)
+.PROBE
+.END
+
+#### B) NMOS Transfer Characteristics (nmos_transfer.cir)
+Plots Drain Current I_D vs. V_GS (0V to 2V) at fixed V_DD = 5V:
+
+NMOS TRANSFER CHARACTERISTICS CODE
+VGS 1 0 DC 0V
+VX 3 2 DC 0V
+VDD 3 0 DC 5V
+M1 2 1 0 0 NMOS W=1U L=0.35U
+.MODEL NMOS NMOS (LEVEL=3
++TOX=7.9E-9 NSUB=1E17 GAMMA=0.5827871
++PHI=0.7 VTO=0.5445549 DELTA=0
++UO=436.256147 ETA=0 THETA=0.1749648
++KP=2.055786E-4 VMAX=8.3099444E4 KAPPA=0.2574081
++RSH=0.0559398 NFS=1E12 TPG=1
++XJ=3E-7 LD=3.162278E-11 WD=7.046724E-8
++CGDO=2.82E-10 CGSO=2.82E-10 CGBO=1E-10
++CJ=1E-3 PB=0.9758533 MJ=0.3448504
++CJSW=3.77852E-10 MJSW=0.3508721)
+.DC VGS 0 2 0.1
+.PLOT DC I(VX)
+.PROBE
+.END
+
+------------------------------------------------------------------------
+### Step 3: Simulate and Add Trace
+
+1. In PSpice AD, open nmos_output.cir (or nmos_transfer.cir) so it is the active file.
+2. Click Simulation -> Run (the blue Play icon).
+3. In the waveform window, go to Trace -> Add Trace (or press Insert).
+4. Select I(VX) or ID(M1) and click OK.
+5. To verify the parameter variations shown in the journal (pages 17–22 of VLSI_EXP1_w_Op.pdf), change one parameter at a time in the .cir file and re-run:
+   - Width (W): W=0.5u (ID=155uA), W=1.5u (ID=580uA)
+   - Length (L): L=0.15u (ID=1.25mA), L=0.5u (ID=222uA)
+   - Threshold Voltage (VTO): VTO=0.54455489 (ID=370uA), VTO=0.44455489 (ID=400uA), VTO=1.2V
+   - Transconductance (KP): KP=29E-4 (ID=5.2mA), KP=29.30
+   - Oxide Thickness (TOX): TOX=120E-9 (ID=368uA)
+   - Body Effect (GAMMA): GAMMA=0.744

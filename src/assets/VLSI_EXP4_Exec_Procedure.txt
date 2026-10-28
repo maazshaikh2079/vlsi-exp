@@ -1,0 +1,33 @@
+========================================================================
+VLSI EXPERIMENT 4 — EXECUTION PROCEDURE
+Title: To design and verify the layout of CMOS inverter.
+Reference PDF: VLSI_EXP4_w_Op.pdf
+========================================================================
+
+### Step 1: Software Required
+- Microwind (and optionally DSCH for schematic capture)
+
+------------------------------------------------------------------------
+### Step 2: Key Layout Design Conditions for CMOS Inverter
+1. A CMOS inverter consists of a complementary pair: a **PMOS transistor** at the top (inside an N-Well connected to VDD) and an **NMOS transistor** at the bottom (connected to VSS/GND).
+2. Keep the PMOS channel width ($W_p$) approximately **double** the NMOS channel width ($W_n$) to balance rise and fall times.
+3. Connect both gates together using a single vertical **Polysilicon** strip (Input `A` / `Vin`).
+4. Connect the PMOS Drain and NMOS Drain together using a **Metal 1** strip (Output `Y` / `Vout`).
+5. Place a `VDD` supply on the PMOS Source & N-Well contact, and a `VSS (GND)` on the NMOS Source.
+
+------------------------------------------------------------------------
+### Step 3: Step-by-Step Execution in Microwind
+
+1. Open **Microwind** software for layout design.
+2. Draw the CMOS Inverter layout:
+   - Place the **N-Well** at the top.
+   - Create the **PMOS** device inside the N-Well (P+ diffusion + Polysilicon gate) and the **NMOS** device below it (N+ diffusion + Polysilicon gate).
+   - Join the Polysilicon gates of PMOS and NMOS together and attach a **Clock** stimulus (input).
+   - Join the Drain terminals of PMOS and NMOS with **Metal 1** and place a **Visible Node (Eye icon)** for the output.
+   - Connect **VDD** to the top rail (PMOS source + N-Well polarization contact) and **VSS (Ground)** to the bottom rail (NMOS source).
+3. Click on **DRC (Design Rule Checker)** at every stage of the design to verify there are no spacing or width errors.
+4. Save the design (`.msk` file) and run a final **DRC**.
+5. Click **Run Simulation** (`Simulate -> Start Simulation`):
+   - Observe **Voltage vs. Time** (confirming output is `1` when input is `0`, and `0` when input is `1`).
+   - Observe **Voltage & Current** and **Voltage vs. Voltage** (DC transfer characteristic curve).
+6. Record the layout and output waveforms.

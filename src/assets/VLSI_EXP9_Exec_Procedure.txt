@@ -1,0 +1,36 @@
+========================================================================
+VLSI EXPERIMENT 9 — EXECUTION PROCEDURE
+Title: To design the layout of Ripple Carry Adder using DSCH and Micro-wind.
+Reference PDF: VLSI_EXP9_w_Op.pdf
+========================================================================
+
+### Step 1: Software Required
+- DSCH (Digital Schematic Editor)
+- Microwind (Layout Editor & Simulator)
+
+------------------------------------------------------------------------
+### Step 2: 4-Bit Ripple Carry Adder Theory & Example Calculation
+- A **4-Bit Ripple Carry Adder (RCA)** cascades four Full Adders (`FA0`, `FA1`, `FA2`, `FA3`) where the carry-out ($C_i$) of each stage ripples into the carry-in of the next stage:
+  - Sum: $S_i = A_i \oplus B_i \oplus C_{i-1}$
+  - Carry: $C_i = (A_i \cdot B_i) + (B_i \cdot C_{i-1}) + (C_{i-1} \cdot A_i)$
+- **Example verified in Journal (`0101` + `1010` with `Cin = 0`):**
+  - Stage 1 (`FA0`): `A0=1, B0=0, Cin=0` -> `S0 = 1, C0 = 0`
+  - Stage 2 (`FA1`): `A1=0, B1=1, C0=0`  -> `S1 = 1, C1 = 0`
+  - Stage 3 (`FA2`): `A2=1, B2=0, C1=0`  -> `S2 = 1, C2 = 0`
+  - Stage 4 (`FA3`): `A3=0, B3=1, C2=0`  -> `S3 = 1, C3 = 0`
+  - Final Output: `Sum (S3S2S1S0) = 1111`, `Cout (C3) = 0`
+
+------------------------------------------------------------------------
+### Step 3: Step-by-Step Execution Procedure
+
+1. Open **DSCH** software.
+2. Draw the **4-Bit Ripple Carry Adder** schematic by cascading four 1-bit Full Adder blocks:
+   - Connect inputs `A0..A3`, `B0..B3`, and initial carry-in `Cin`.
+   - Connect `Cout` of each Full Adder to `Cin` of the next stage.
+   - Connect output probes/LEDs to `S0..S3` and final `Cout`.
+3. Run the logic simulation in DSCH and verify addition for test vectors (e.g., `A = 0101`, `B = 1010` -> `Sum = 1111, Cout = 0`).
+4. Save the schematic (`.sch`) and click **File -> Make Verilog File** to generate the `.v` netlist.
+5. Open **Microwind** software.
+6. Go to **Compile -> Compile Verilog File**, select the generated `.v` file, click **Compile**, and then click **Back to Editor** to generate the CMOS layout automatically.
+7. Run **DRC (Design Rule Checker)** to confirm there are no layout errors.
+8. Click **Run Simulation** to observe the timing waveforms of inputs `A`, `B`, `Cin` and outputs `S0..S3`, `Cout`.

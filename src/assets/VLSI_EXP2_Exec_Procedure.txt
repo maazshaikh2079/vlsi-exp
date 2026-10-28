@@ -1,0 +1,72 @@
+========================================================================
+VLSI EXPERIMENT 2 — EXECUTION PROCEDURE
+Title: To study and verification of Output and Transfer characteristics of PMOS transistor.
+Reference PDF: VLSI_EXP2_w_Op.pdf
+========================================================================
+
+### Step 1: Install / Open a SPICE Simulator
+
+Your lab manual supports OrCAD PSpice or Ngspice (and LTspice also runs .cir files directly):
+- Option A (OrCAD PSpice A/D / Student Edition 9.1): Open PSpice AD (File -> New -> Text File).
+- Option B (Ngspice / LTspice — lightweight & free): Open the .cir netlist file and click Run.
+- Virtual Lab Link: http://www.vlsi-iitg.vlabs.ac.in
+
+------------------------------------------------------------------------
+### Step 2: Create the .cir Netlist Files
+
+#### A) PMOS Output Characteristics (pmos_output.cir)
+Plots Drain Current I_D vs. V_DD (5V to -15V) for V_GS steps (5V to -5V):
+
+PMOS OUTPUT CHARACTERISTICS CODE
+VGS 1 0 DC 0V
+VX 3 2 DC 5V
+VDD 3 0 DC 5V
+M1 2 1 0 0 PMOS W=1u L=0.35u
+.MODEL PMOS PMOS (LEVEL=3
++TOX=7.9E-9 NSUB=1E17 GAMMA=0.4083894
++PHI=0.7 VTO=0.7140674 DELTA=0
++UO=212.23198801 ETA=9.999762E-4 THETA=0.2020774
++KP=6.733755E-5 VMAX=1.181551E5 KAPPA=1.5
++RSH=30.0712458 NFS=1E12 TPG=-1
++XJ=2E-7 LD=5.000001E-13 WD=1.249872E-7
++CGDO=3.09E-10 CGSO=3.09E-10 CGBO=1E-10
++CJ=1.419508E-3 PB=0.8152753 MJ=0.5
++CJSW=4.813504E-10 MJSW=0.5)
+.DC VDD 5 -15 -0.01 VGS 5 -5 -1
+.PLOT DC I(VX)
+.PROBE
+.END
+
+#### B) PMOS Transfer Characteristics (pmos_transfer.cir)
+Plots Drain Current I_D vs. V_GS (0V to -5V) at fixed V_DD = -15V:
+
+PMOS TRANSFER CHARACTERISTICS CODE
+VGS 1 0 DC 0V
+VX 3 2 DC 5V
+VDD 3 0 DC -15V
+M1 2 1 0 0 PMOS W=1u L=0.35u
+.MODEL PMOS PMOS (LEVEL=3
++TOX=120E-9 NSUB=1E17 GAMMA=0.40
++PHI=0.7 VTO=0.7 DELTA=0
++UO=212.23198801 ETA=9.999762E-4 THETA=0.2020744
++KP=6.733755E-5 VMAX=1.181551E5 KAPPA=1.5
++RSH=30.0712458 NFS=1E12 TPG=-1
++XJ=2E-7 LD=5.000001E-13 WD=1.249872E-7
++CGDO=3.09E-10 CGSO=3.09E-10 CGBO=1E-10
++CJ=1.419508E-3 PB=0.8152753 MJ=0.5
++CJSW=4.813504E-10 MJSW=0.5)
+.DC VGS 0 -5 -1
+.PLOT DC I(VX)
+.PROBE
+.END
+
+------------------------------------------------------------------------
+### Step 3: Simulate and Add Trace
+
+1. In PSpice AD, open pmos_output.cir (or pmos_transfer.cir) so it is the active file.
+2. Click Simulation -> Run.
+3. In the waveform window, go to Trace -> Add Trace (or press Insert).
+4. Select I(VX) or ID(M1) and click OK.
+5. Verify the parameter variations recorded in the journal (pages 31–36 of VLSI_EXP2_w_Op.pdf):
+   - Output Characteristics: VTO=1.2V (ID=-2.1mA), TOX=120E-9 (ID=-2.2mA), LAMBDA=0.02, GAMMA=0.744 (ID=-2.2mA), LAMBDA=0 (ID=-600mA)
+   - Transfer Characteristics: L=0.5u, L=1u, VTO=1.5, VTO=2, KP=2.055, GAMMA=0.744

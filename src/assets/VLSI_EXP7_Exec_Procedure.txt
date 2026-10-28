@@ -1,0 +1,33 @@
+========================================================================
+VLSI EXPERIMENT 7 — EXECUTION PROCEDURE
+Title: To design the layout of the D latch using micro-wind.
+Reference PDF: VLSI_EXP7_w_Op.pdf
+========================================================================
+
+### Step 1: Software Required
+- DSCH (Digital Schematic Editor)
+- Microwind (Layout Editor & Simulator)
+
+------------------------------------------------------------------------
+### Step 2: Circuit & Theory Overview
+- A **D Latch (Transparent Latch)** stores 1 bit of information.
+- When `CLK` (Enable) is HIGH (`1`), output `Q` follows the data input `D`.
+- When `CLK` falls to LOW (`0`), the last state of `D` is latched and held at `Q`.
+- It is constructed from an SR latch by feeding `D` to `S` and `~D` (via an inverter) to `R`, gated by `CLK`.
+
+------------------------------------------------------------------------
+### Step 3: Step-by-Step Execution Procedure
+
+#### A) Schematic & Verilog Generation in DSCH
+1. Open **DSCH** software.
+2. Draw the D Latch schematic (4 NAND gates + 1 NOT gate, or transmission-gate CMOS D-latch) with inputs `D` and `CLK` (or `EN`) and outputs `Q` and `~Q`.
+3. Run the logic simulation in DSCH to verify that `Q` tracks `D` when `CLK = 1` and holds its value when `CLK = 0`.
+4. Save the circuit and click **File -> Make Verilog File** to export the `.v` file.
+
+#### B) Layout & Waveform Verification in Microwind
+1. Start **Microwind** software for layout.
+2. Compile the Verilog file (`Compile -> Compile Verilog File` -> `Compile` -> `Back to Editor`) or draw the D Latch CMOS layout following the lambda design rules.
+3. Click **DRC (Design Rule Checker)** at every stage of design to ensure zero violations.
+4. Save the layout and run a final **DRC**.
+5. Click **Run Simulation** to observe the `D`, `CLK`, `Q`, and `~Q` voltage-time waveforms.
+6. Record the layout and output waveforms observed.
